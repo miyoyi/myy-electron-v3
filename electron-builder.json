@@ -1,0 +1,22 @@
+{
+  "appId": "com.myy-website.electron-vue3-tpm",
+  "productName": "myy-electron",
+  "copyright": "Copyright © 2023 <myy>",
+  "directories": {
+    "output": "output/app"
+  },
+  "win": {
+    "icon": "public/appIcon.icns",
+    "target": ["7z"]
+  },
+  "files": ["!node_modules", "output/vite/**/*", "output/electron/**/*"],
+  "mac": {
+    "category": "public.app-category.electron-vue3-tpm",
+    "icon": "public/appIcon.icns",
+    "target": ["dmg"]
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true
+  }
+}

@@ -1,0 +1,8 @@
+/dist/*
+/electron/*
+.local
+.output.js
+/node_modules/**
+
+**/*.svg
+**/*.sh
