@@ -21,7 +21,6 @@ if (import.meta.env.VITE_API_BASE_URL) {
 
 axios.interceptors.request.use(
   (config: any) => {
-    config.baseURL = "/api";
     const t = (new Date().getTime() / 1000).toFixed(0);
     const params = deepClone(config.method === "get" ? config.params : config.data);
     const keyArray = Object.keys(params);
@@ -102,3 +101,5 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export default axios;

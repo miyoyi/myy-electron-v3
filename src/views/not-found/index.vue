@@ -1,7 +1,6 @@
 <template>
   <div class="content">
-    <a-result class="result" status="404" :subtitle="'找不到当前页面哦!'">
-    </a-result>
+    <a-result class="result" status="404" :subtitle="'找不到当前页面哦!'"> </a-result>
     <div class="operation-row">
       <a-button key="back" type="primary" @click="back"> 返回 </a-button>
     </div>
@@ -9,7 +8,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { useRouter } from 'vue-router';
+  import { useRouter } from "vue-router";
 
   const router = useRouter();
   const back = () => {
