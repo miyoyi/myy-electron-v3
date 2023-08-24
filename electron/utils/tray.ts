@@ -14,6 +14,7 @@ function tray() {
   const logo = logoName()
   let ToolTip = 'myy-electron'
   let flashFlag = false;
+  let isFlashing = false; 
   let timer = null;
   let msgFlag = false;
   let tray = new Tray(path.join(__dirname, logo));
@@ -26,6 +27,7 @@ function tray() {
       tray.setToolTip(ToolTip);
       flashFlag = false
       clearInterval(timer); 
+      isFlashing = false;
       tray.setImage(path.join(__dirname, logo));
     }
     if (BrowserWindow.getAllWindows().length === 0) {
@@ -36,6 +38,8 @@ function tray() {
   });
   
   ipcMain.on('flash', (event,arg:boolean) => {
+    if (isFlashing) return
+    isFlashing = true;
     flashFlag = arg
     ToolTip = '执行登录后闪烁,单击停止'
     if (flashFlag) {
