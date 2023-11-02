@@ -19,7 +19,7 @@ function createWindow() {
     transparent: false, // * app 背景透明
     hasShadow: true, // * app 边框阴影
     show: false, // 启动窗口时隐藏,直到渲染进程加载完成「ready-to-show 监听事件」 再显示窗口,防止加载时闪烁
-    resizable: false, // 禁止手动修改窗口尺寸
+    resizable: true, // 禁止手动修改窗口尺寸
     webPreferences: {
       contextIsolation: true, // 启用沙箱环境以隔离渲染进程和主进程
       sandbox: true, 

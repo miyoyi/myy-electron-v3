@@ -3,15 +3,23 @@ import { createWindow } from "./utils/createWindow";
 import { createAppMenu } from "./utils/menu";
 import { onNavbar } from "./utils/navbar";
 import { tray } from "./utils/tray";
+import { checkUpdate } from "./utils/checkUpdate";
 
 // 屏蔽控制台渲染进程使用不安全的方式加载资源 警告
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = "true";
 
-onNavbar();
+//  开发环境也检测是否最新版本
+Object.defineProperty(app, 'isPackaged', {
+  get() {
+    return true;
+  }
+});
 
+onNavbar();
 // 替代{app.on("ready",()=>{})}
 app.whenReady().then(() => {
-
+  
+  checkUpdate()
   tray()
   // 设置app菜单
   Menu.setApplicationMenu(createAppMenu());
@@ -20,7 +28,5 @@ app.whenReady().then(() => {
   app.on("activate", () => BrowserWindow.getAllWindows().length === 0 && createWindow());
 });
 
-// 除了 macOS 外，当所有窗口都被关闭的时候退出程序。 macOS窗口全部关闭时,dock中程序不会退出
-app.on("window-all-closed", () => {
-  process.platform !== "darwin" && app.quit();
-});
+// 关闭窗口不关闭程序
+app.on("window-all-closed", () => {});
