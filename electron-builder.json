@@ -7,7 +7,7 @@
   },
   "win": {
     "icon": "public/appIcon.icns",
-    "target": ["7z","msi","nsis"],
+    "target": ["7z", "msi", "nsis"],
     "publish": [
       {
         "provider": "generic",
@@ -19,7 +19,7 @@
   "mac": {
     "category": "public.app-category.electron-vue3-tpm",
     "icon": "public/appIcon.icns",
-    "target": ["dmg","7z"],
+    "target": ["dmg", "7z"],
     "publish": [
       {
         "provider": "generic",
