@@ -16,7 +16,7 @@ export function checkUpdate () {
     dialog.showMessageBox({
       type: 'error',
       title: '更新检测错误',
-      message: err.toString(),
+      message: err.toString() === 'Error: net::ERR_CONNECTION_REFUSED' ? '未检测到更新地址' : err.toString(),
     })
   })
   

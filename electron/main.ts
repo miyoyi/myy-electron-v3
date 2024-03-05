@@ -4,6 +4,7 @@ import { createAppMenu } from "./utils/menu";
 import { onNavbar } from "./utils/navbar";
 import { tray } from "./utils/tray";
 import { checkUpdate } from "./utils/checkUpdate";
+import { startCrashReporter } from './utils/crashReporter'
 
 // 屏蔽控制台渲染进程使用不安全的方式加载资源 警告
 process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = "true";
@@ -15,6 +16,7 @@ Object.defineProperty(app, 'isPackaged', {
   }
 });
 
+startCrashReporter();
 onNavbar();
 // 替代{app.on("ready",()=>{})}
 app.whenReady().then(() => {

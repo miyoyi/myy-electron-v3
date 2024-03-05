@@ -1,6 +1,7 @@
 import * as path from "path";
 import { BrowserWindow } from "electron";
 import { mainContextMenu } from "./mainContextMenu";
+import { crashedActions } from "./crashReporter"
 import { logoName } from "./utils";
 
 const {NODE_ENV} = process.env;
@@ -42,6 +43,13 @@ function createWindow() {
       event.sender.setResizable(false);
     }, 1);
   });
+
+  // 进程被杀死，大概率崩溃
+  Window.webContents.on('render-process-gone', (event, details) => {
+    const detail = JSON.stringify(details)
+    crashedActions(detail)
+  })
+   
 
   /** 设置全局右键菜单 */
   mainContextMenu(Window);
