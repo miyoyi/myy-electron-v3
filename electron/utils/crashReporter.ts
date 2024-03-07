@@ -18,6 +18,7 @@ export function startCrashReporter () {
     crashReporter.start({
       productName: app?.getName(),
       submitURL: 'http://127.0.0.1:5173', // 上传报错地址,这里开发不报错写的本地
+      rateLimit: true, // 一小时上传一次错误报告
       uploadToServer: true,
     // 加入需要传的其他参数
     //   globalExtra: {
