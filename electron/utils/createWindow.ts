@@ -2,11 +2,12 @@ import * as path from "path";
 import { BrowserWindow } from "electron";
 import { mainContextMenu } from "./mainContextMenu";
 import { crashedActions } from "./crashReporter"
+import { checkUpdate } from "./checkUpdate";
 import { logoName } from "./utils";
 
 const {NODE_ENV} = process.env;
 
-/** 创建窗口方法 */
+/** 创建主窗口方法 */
 function createWindow() {
   const logo = logoName()
   const iconPath = path.join(__dirname, logo); // 替换为您的图标文件路径
@@ -49,13 +50,14 @@ function createWindow() {
     const detail = JSON.stringify(details)
     crashedActions(detail)
   })
-   
 
   /** 设置全局右键菜单 */
   mainContextMenu(Window);
 
-  // * 主窗口加载外部链接
+  // 主窗口加载外部链接
   if (NODE_ENV === "development") Window.loadURL(process.env.LoadUrl as string); // 开发环境,加载vite启动的vue项目地址
   if (NODE_ENV !== "development") Window.loadFile(path.join(__dirname, "..", "vite/index.html")); // 生产环境加载打包后文件
+
+  checkUpdate(Window) // 检测更新
 }
 export { createWindow };

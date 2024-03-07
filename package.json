@@ -33,6 +33,7 @@
     "axios": "^1.6.0",
     "dayjs": "^1.11.10",
     "echarts": "^5.4.3",
+    "electron-store": "^8.1.0",
     "electron-updater": "^6.1.4",
     "less": "^4.2.0",
     "lodash": "^4.17.21",

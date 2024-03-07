@@ -1,24 +1,12 @@
-<script setup lang="ts" name="AppNav">
-  import AppIcon from "@/utils/aliicons";
-
-  const control = [
-    { key: "mini", icon: "icon-2zuixiaohua-2" },
-    { key: "big", icon: "icon-zuidahua1" },
-    { key: "close", icon: "icon-close-bold" }
-  ];
-
-  const controlButtonClick = (val: string) => {
-    window.ipc.send("navBar", val);
-  };
-</script>
-
 <template>
-  <div id="appNav" class="drag">
+  <div id="appNav" class="drag" :style="{ justifyContent: prog ? 'space-between' : 'flex-end' }">
+    <div v-if="prog" class="appNav_left">{{ data.progress }}%</div>
     <div class="no-drag appNav_right">
       <div
         v-for="item in control"
         :key="item.key"
         :class="['controlButton', item.key]"
+        :style="{ color: appStore.theme === 'dark' ? '#eee' : '#111' }"
         @click="controlButtonClick(item.key)">
         <AppIcon :class="item.key" :type="item.icon" />
       </div>
@@ -26,8 +14,41 @@
   </div>
 </template>
 
+<script setup lang="ts" name="AppNav">
+  import { reactive, computed, onMounted } from "vue";
+  import { useAppStore } from "@/store";
+  import AppIcon from "@/utils/aliicons";
+
+  const appStore = useAppStore();
+
+  const data = reactive({
+    progress: 0
+  });
+
+  const control = [
+    { key: "mini", icon: "icon-2zuixiaohua-2" },
+    { key: "big", icon: "icon-zuidahua1" },
+    { key: "close", icon: "icon-close-bold" }
+  ];
+
+  const prog = computed(() => {
+    return data.progress && data.progress !== 100;
+  });
+
+  // 在组件挂载时监听事件
+  onMounted(() => {
+    window.ipc.on("download-progress", (progress: any) => {
+      data.progress = progress * 100;
+    });
+  });
+
+  const controlButtonClick = (val: string) => {
+    window.ipc.send("navBar", val);
+  };
+</script>
+
 <style lang="less" scoped>
-  #appNav {
+  .drag {
     width: 100vw;
     height: var(--nav-height);
     position: absolute;
@@ -35,11 +56,15 @@
     left: 0;
     display: flex;
     align-items: center;
-    justify-content: flex-end;
     z-index: 999;
     .appNav_left,
     .appNav_right {
       height: 100%;
+    }
+    .appNav_left {
+      margin: 1vw 0 0 2vw;
+      font-size: large;
+      font-weight: bolder;
     }
     .appNav_right {
       .controlButton {

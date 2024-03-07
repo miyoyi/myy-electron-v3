@@ -30,9 +30,15 @@ export function onNavbar() {
     } // 关闭窗口
     if (val === "big") {
       // 全屏/取消全屏
-      window?.setResizable(true);
-      window?.isMaximized() ? window?.unmaximize() : window?.maximize();
-      window?.setResizable(false);
+      if (window?.isMaximized()) {
+        window?.unmaximize()
+      } else {
+        window?.maximize()
+      }
+      // 取消全屏后不能修改尺寸bug
+      setTimeout(() => {
+        window?.setResizable(true); 
+      }, 0); 
     }
   });
 }
