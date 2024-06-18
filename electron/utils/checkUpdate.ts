@@ -25,19 +25,34 @@ export function checkUpdate (Window: { webContents: { send: (arg0: string, arg1:
   // 监听'update-available'事件，发现有新版本时触发
   autoUpdater.on('update-available', (info) => {
     const skippedVersion = store.get("skippedVersion");
+    const updateInstalled = store.get("updateInstalled");
     if (info.version === skippedVersion) return
-    dialog.showMessageBox({
-      type: 'info',
-      title: '应用更新',
-      message: '发现新版本，是否更新？',
-      buttons: ['是', '跳过更新', '否']
-    }).then((buttonIndex) => {
-      if(buttonIndex.response === 0) {  // 选择是，下载新版本
-        autoUpdater.downloadUpdate() 
-      } else if (buttonIndex.response === 1) {
-        store.set("skippedVersion", info.version);
-      }
-    })
+    if (updateInstalled) {
+      dialog.showMessageBox({
+        type: 'info',
+        title: '更新下载完成',
+        message: '更新下载完成是否立即重启？',
+        buttons: ['是', '否']
+      }).then((buttonIndex) => {
+        if(buttonIndex.response === 0) {  // 选择是，则重启程序，安装新版本
+          store.delete("updateInstalled");
+          autoUpdater.quitAndInstall()
+        }
+      })
+    } else {
+      dialog.showMessageBox({
+        type: 'info',
+        title: '应用更新',
+        message: '发现新版本，是否更新？',
+        buttons: ['是', '跳过更新', '否']
+      }).then((buttonIndex) => {
+        if(buttonIndex.response === 0) {  // 选择是，下载新版本
+          autoUpdater.downloadUpdate() 
+        } else if (buttonIndex.response === 1) {
+          store.set("skippedVersion", info.version);
+        }
+      })
+    }
   })
 
   // 监听'download-progress'事件，下载进度
@@ -57,6 +72,8 @@ export function checkUpdate (Window: { webContents: { send: (arg0: string, arg1:
       if(buttonIndex.response === 0) {  // 选择是，则重启程序，安装新版本
         store.delete("skippedVersion");
         autoUpdater.quitAndInstall()
+      } else {
+        store.set("updateInstalled", true);
       }
     })
   })
